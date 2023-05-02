@@ -55,7 +55,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: file
-          path: ${{ env.GITHUB_WORKSPACE }}/builder
+          path: ${{ env.GITHUB_WORKSPACE }}/builder/*.dmg
 
   upload-release:
     needs: build-tauri
