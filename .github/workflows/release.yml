@@ -53,6 +53,7 @@ jobs:
 
   upload-release:
     needs: build-tauri
+    runs-on: ubuntu-latest
     steps:
       - name: Create Release
         id: create_release
