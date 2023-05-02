@@ -53,6 +53,8 @@ jobs:
 
       - name: Upload File
         uses: actions/upload-artifact@v2
+        run: |
+          ls -al ${{ env.GITHUB_WORKSPACE }}/builder
         with:
           name: file
           path: ${{ env.GITHUB_WORKSPACE }}/builder/*.dmg
