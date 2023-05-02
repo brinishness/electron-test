@@ -1,0 +1,20 @@
+{
+  "productName": "tears",
+  "files": ["electron/main.js", "dist"],
+  "extraFiles": ["./videos", "./video"],
+  "directories": {
+    "output": "./builder"
+  },
+  "win": {
+    "target": "nsis"
+  },
+  "mac": {
+    "forceCodeSigning": false
+  },
+  "target": [
+    "nsis",
+    "zip",
+    "dmg",
+    "pkg"
+  ]
+}

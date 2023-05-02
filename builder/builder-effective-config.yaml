@@ -1,0 +1,19 @@
+directories:
+  output: ./builder
+  buildResources: build
+productName: tears
+files:
+  - filter:
+      - electron/main.js
+      - dist
+extraFiles:
+  - filter:
+      - ./videos
+      - ./video
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+        - ia32
+electronVersion: 24.1.3

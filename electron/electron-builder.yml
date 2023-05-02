@@ -1,0 +1,15 @@
+productName: tears
+files:
+  - electron/main.js
+  - dist
+extraFiles:
+  - ./videos
+  - ./video
+directories:
+  output: ./builder
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+        - ia32
