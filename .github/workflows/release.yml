@@ -50,13 +50,12 @@ jobs:
         run: yarn && yarn electron:build
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
       - name: Upload File
-        runs-on: ubuntu-latest
-        steps:
-          - uses: actions/upload-artifact@v2
-            with:
-              name: file
-              path: builder/*.[appimage|dmg|exe]
+        uses: actions/upload-artifact@v2
+        with:
+          name: file
+          path: builder/*.[appimage|dmg|exe]
 
   upload-release:
     needs: build-tauri
