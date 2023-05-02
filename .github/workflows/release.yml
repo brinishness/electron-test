@@ -50,9 +50,7 @@ jobs:
         run: yarn && yarn electron:build
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        assets:
-          path: ./builder
-          name: tears-${{ matrix.platform }}
+        artifacts-path: ./builder
 
   upload-release:
     needs: build-tauri
