@@ -50,6 +50,9 @@ jobs:
         run: yarn && yarn electron:build
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        assets:
+          path: ./builder
+          name: tears-${{ matrix.platform }}
 
   upload-release:
     needs: build-tauri
@@ -64,4 +67,4 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: 'tears ${{ github.ref }}'
           body: '${{ github.event.head_commit.message }}'
-          asset_path: ./builder/*.[dmg, exe, AppImage]
+          asset_path: {{needs.build-tauri.outputs.artifact-path/*.[appimage|dmg|exe]}}
