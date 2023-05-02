@@ -68,7 +68,7 @@ jobs:
           name: file
 
       - name: show
-        run: echo ${{steps.download-artifact.outputs.*}}
+        run: ls -al
 
       - name: Create Release
         id: create_release
