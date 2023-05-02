@@ -76,4 +76,4 @@ jobs:
           tag_name: ${{ github.tag }}
           release_name: 'tears ${{ github.ref }}'
           body: '${{ github.event.head_commit.message }}'
-          asset_path: ${{steps.download-artifact.outputs.download-path.*.[dmg,exe,deb,AppImage]}}
+          asset_path: ${{steps.download-artifact.outputs.download-path.*]}}
