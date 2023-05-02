@@ -65,4 +65,4 @@ jobs:
           tag_name: ${{ github.tag }}
           release_name: 'tears ${{ github.ref }}'
           body: '${{ github.event.head_commit.message }}'
-          asset_path: ${{needs.build-tauri.outputs.artifact-path/*.[appimage|dmg|exe]}}
+          asset_path: ${{needs.build-tauri.artifact-path/*.[appimage|dmg|exe]}}
