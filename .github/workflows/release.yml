@@ -53,11 +53,9 @@ jobs:
 
       - name: Upload File
         uses: actions/upload-artifact@v2
-        run: |
-          ls -al ${{ env.GITHUB_WORKSPACE }}/builder
         with:
           name: file
-          path: ${{ env.GITHUB_WORKSPACE }}/builder/*.dmg
+          path: ${{ env.GITHUB_WORKSPACE }}/builder
 
   upload-release:
     needs: build-tauri
@@ -78,4 +76,4 @@ jobs:
           tag_name: ${{ github.tag }}
           release_name: 'tears ${{ github.ref }}'
           body: '${{ github.event.head_commit.message }}'
-          asset_path: ${{steps.download-artifact.outputs.*}}
+          asset_path: ${{steps.download-artifact.outputs.download-path.*.[dmg,exe,deb,AppImage]}}
