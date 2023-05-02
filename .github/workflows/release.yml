@@ -50,12 +50,24 @@ jobs:
         run: yarn && yarn electron:build
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        artifacts-path: ./builder
+      - name: Upload File
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/upload-artifact@v2
+            with:
+              name: file
+              path: builder/*.[appimage|dmg|exe]
 
   upload-release:
     needs: build-tauri
     runs-on: ubuntu-latest
     steps:
+      - name: Download File
+        id: download-artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: file
+
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v1
@@ -65,4 +77,4 @@ jobs:
           tag_name: ${{ github.tag }}
           release_name: 'tears ${{ github.ref }}'
           body: '${{ github.event.head_commit.message }}'
-          asset_path: ${{needs.build-tauri.artifact-path/*.[appimage|dmg|exe]}}
+          asset_path: ${{steps.download-artifact.*]}}
