@@ -48,3 +48,5 @@ jobs:
 
       - name: Install app dependencies and build it
         run: yarn && yarn electron:build
+        with:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
