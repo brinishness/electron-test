@@ -55,7 +55,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: file
-          path: builder/*.[appimage|dmg|exe]
+          path: ${{ env.GITHUB_WORKSPACE }}/builder
 
   upload-release:
     needs: build-tauri
@@ -76,4 +76,4 @@ jobs:
           tag_name: ${{ github.tag }}
           release_name: 'tears ${{ github.ref }}'
           body: '${{ github.event.head_commit.message }}'
-          asset_path: ${{steps.download-artifact.outputs.download-path.*}}
+          asset_path: ${{steps.download-artifact.outputs.*}}
