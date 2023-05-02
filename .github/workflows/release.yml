@@ -23,8 +23,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: '${{ steps.get_version.outputs.VERSION }}'
-          release_name: 'tears ${{ steps.get_version.outputs.VERSION }}'
+          tag_name: ${{ github.ref }}
+          release_name: 'tears ${{ github.ref }}'
           body: '${{ github.event.head_commit.message }}'
 
   build-tauri:
