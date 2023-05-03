@@ -12,27 +12,19 @@
     "output": "./builder"
   },
   "win": {
-    "target": "nsis",
-    "protocols": {
-      "name": "tears",
-      "schemes": [
-        "tears"
-      ]
-    }
+    "target": "nsis"
   },
   "mac": {
-    "forceCodeSigning": false,
-    "protocols": {
-      "name": "tears",
-      "schemes": [
-        "tears"
-      ]
-    }
+    "forceCodeSigning": false
   },
   "target": [
     "nsis",
     "zip",
     "dmg",
     "pkg"
-  ]
+  ],
+  "protocols": {
+    "name": "tears",
+    "schemes": ["tears"]
+  }
 }
