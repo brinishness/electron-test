@@ -109,17 +109,8 @@ function handleUrl(urlStr) {
     console.log(urlObj.search); // -> ?name=1&pwd=2
     console.log(searchParams.get('name')); // -> 1
     console.log(searchParams.get('pwd')); // -> 2
-    dialog
-        .showMessageBox({
-            type: "info",
-            title: `${JSON.stringify(urlStr)}`,
-            message: "确认退出？",
-            buttons: ["确认", "取消"], //选择按钮，点击确认则下面的idx为0，取消为1
-            cancelId: 1, //这个的值是如果直接把提示框×掉返回的值，这里设置成和“取消”按钮一样的值，下面的idx也会是1
-        })
-        .then((idx) => {
-            //注意上面↑是用的then，网上好多是直接把方法做为showMessageBox的第二个参数，我的测试下不成功
-            console.log(idx);
-        });
-    // 根据需要做其他事情
+    new Notification({
+        title: '打开了url',
+        body: JSON.stringify(urlStr)
+    }).show();
 }
