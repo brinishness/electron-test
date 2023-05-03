@@ -1,6 +1,7 @@
 // 控制应用生命周期和创建原生浏览器窗口的模组
 const {app, BrowserWindow, Menu, dialog, Notification} = require("electron");
 const path = require("path");
+const {format} = require("url");
 // require('update-electron-app')();
 // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = true // 关闭控制台的警告
 // const packager = require('electron-packager')
@@ -27,7 +28,7 @@ function createWindow() {
         },
     });
     // 配置热更新
-    let env = "pro";
+    let env = "pro2";
 
     if (env == "pro") {
         const elePath = path.join(__dirname, "../node_modules/electron");
@@ -45,7 +46,7 @@ function createWindow() {
         // mainWindow.loadFile(path.resolve(__dirname, "../dist/index.html")); // 新增
         mainWindow
             .loadURL(
-                url.format({
+                format({
                     pathname: path.join(__dirname, "../dist/index.html"),
                     protocol: "file:",
                     slashes: true,
@@ -108,9 +109,17 @@ function handleUrl(urlStr) {
     console.log(urlObj.search); // -> ?name=1&pwd=2
     console.log(searchParams.get('name')); // -> 1
     console.log(searchParams.get('pwd')); // -> 2
-    new Notification({
-        title: "通知标题",
-        body: JSON.stringify(urlStr),
-    }).show();
+    dialog
+        .showMessageBox({
+            type: "info",
+            title: `${JSON.stringify(urlStr)}`,
+            message: "确认退出？",
+            buttons: ["确认", "取消"], //选择按钮，点击确认则下面的idx为0，取消为1
+            cancelId: 1, //这个的值是如果直接把提示框×掉返回的值，这里设置成和“取消”按钮一样的值，下面的idx也会是1
+        })
+        .then((idx) => {
+            //注意上面↑是用的then，网上好多是直接把方法做为showMessageBox的第二个参数，我的测试下不成功
+            console.log(idx);
+        });
     // 根据需要做其他事情
 }
