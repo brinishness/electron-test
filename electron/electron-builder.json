@@ -12,7 +12,13 @@
     "output": "./builder"
   },
   "win": {
-    "target": "nsis"
+    "target": "nsis",
+    "protocols": {
+      "name": "tears",
+      "schemes": [
+        "tears"
+      ]
+    }
   },
   "mac": {
     "forceCodeSigning": false,
