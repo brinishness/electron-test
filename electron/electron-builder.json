@@ -1,5 +1,6 @@
 {
   "productName": "tears",
+  "appId": "com.anzhuoapp.anxin",
   "files": [
     "electron/main.js",
     "dist"
@@ -12,10 +13,34 @@
     "output": "./builder"
   },
   "win": {
-    "target": "nsis"
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64",
+          "ia32"
+        ]
+      }
+    ]
   },
   "mac": {
-    "forceCodeSigning": false
+    "forceCodeSigning": false,
+    "target": [
+      {
+        "target": "dmg",
+        "arch": [
+          "x64",
+          "arm64"
+        ]
+      },
+      {
+        "target": "zip",
+        "arch": [
+          "x64",
+          "arm64"
+        ]
+      }
+    ]
   },
   "target": [
     "nsis",
