@@ -2,18 +2,18 @@
 const { app, BrowserWindow, Menu, dialog } = require("electron");
 const path = require("path");
 const url = require("url");
-require('update-electron-app')();
+// require('update-electron-app')();
 // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = true // 关闭控制台的警告
-const packager = require('electron-packager')
-
-packager({
-  dir: "../dist",
-  osxSign: {},
-  osxNotarize: {
-    appleId: '596231290@qq.com',
-    appleIdPassword: 'Ming13164816910'
-  }
-}).then(r => console.log(r))
+// const packager = require('electron-packager')
+//
+// packager({
+//   dir: "../dist",
+//   osxSign: {},
+//   osxNotarize: {
+//     appleId: '596231290@qq.com',
+//     appleIdPassword: 'Ming13164816910'
+//   }
+// }).then(r => console.log(r))
 function createWindow() {
   // 创建浏览器窗口
   const mainWindow = new BrowserWindow({

@@ -1,7 +1,13 @@
 {
   "productName": "tears",
-  "files": ["electron/main.js", "dist"],
-  "extraFiles": ["./videos", "./video"],
+  "files": [
+    "electron/main.js",
+    "dist"
+  ],
+  "extraFiles": [
+    "./videos",
+    "./video"
+  ],
   "directories": {
     "output": "./builder"
   },
@@ -9,7 +15,13 @@
     "target": "nsis"
   },
   "mac": {
-    "forceCodeSigning": false
+    "forceCodeSigning": false,
+    "protocols": {
+      "name": "tears",
+      "schemes": [
+        "tears"
+      ]
+    }
   },
   "target": [
     "nsis",
