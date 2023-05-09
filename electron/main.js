@@ -41,7 +41,7 @@ function createWindow() {
     let env = process.env.NODE_ENV;
     console.log(process.env);
 
-    if (env == "development") {
+    if (env !== "development") {
         const elePath = path.join(__dirname, "../node_modules/electron");
         require("electron-reload")("../", {
             electron: require(elePath),
@@ -60,7 +60,8 @@ function createWindow() {
                 format({
                     pathname: path.join(__dirname, "../dist/index.html"),
                     protocol: "file:",
-                    slashes: true
+                    slashes: true,
+                    hash: "#/"
                 })
             )
             .then((r) => {
