@@ -67,7 +67,9 @@
     "nsis",
     "zip",
     "dmg",
-    "pkg"
+    "pkg",
+    "deb",
+    "rpm"
   ],
   "protocols": {
     "name": "tears",
