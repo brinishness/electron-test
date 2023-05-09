@@ -1,11 +1,13 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+      <div id="canvas"></div>
   </div>
 </template>
 <script lang="ts" setup>
 import {useRoute} from "vue-router";
-
+// import NERtcEngine from "nertc-electron-sdk"
+const NERtcEngine = require("nertc-electron-sdk").default;
+console.log(NERtcEngine);
 const route = useRoute();
 console.log(route.query);
 

@@ -1,5 +1,5 @@
 // 控制应用生命周期和创建原生浏览器窗口的模组
-const {app, BrowserWindow, Menu, dialog, Notification} = require("electron");
+const {app, ipcMain, BrowserWindow, Menu, dialog, Notification, session, Tray} = require("electron");
 const path = require("path");
 const {format} = require("url");
 // require('update-electron-app')();
@@ -14,10 +14,20 @@ const {format} = require("url");
 //     appleIdPassword: 'Ming13164816910'
 //   }
 // }).then(r => console.log(r))
+// const PROTOCOL = 'myapp';
+// const args = [];
+// if (!app.isPackaged) {
+//     args.push(path.resolve(process.argv[1]));
+// }
+// args.push('--');
+//
+// app.setAsDefaultProtocolClient(PROTOCOL, process.execPath, args);
+const autoUpdate = require("./autoUpdate")
+let mainWindow;
 
-function createWindow() {
+function createWindow(hash = "home") {
     // 创建浏览器窗口
-    const mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 1200,
         height: 800,
         webPreferences: {
@@ -28,9 +38,10 @@ function createWindow() {
         },
     });
     // 配置热更新
-    let env = "pro2";
+    let env = process.env.NODE_ENV;
+    console.log(process.env);
 
-    if (env == "pro") {
+    if (env == "development") {
         const elePath = path.join(__dirname, "../node_modules/electron");
         require("electron-reload")("../", {
             electron: require(elePath),
@@ -50,13 +61,14 @@ function createWindow() {
                     pathname: path.join(__dirname, "../dist/index.html"),
                     protocol: "file:",
                     slashes: true,
-                    hash: "about",
+                    hash: hash,
                 })
             )
             .then((r) => {
                 console.log(r);
             });
     }
+    autoUpdate.handleUpdate(mainWindow);
 }
 
 // 这段程序将会在 Electron 结束初始化
@@ -65,6 +77,64 @@ function createWindow() {
 app.whenReady().then(() => {
     createWindow();
 
+let tray = null
+app.whenReady().then(() => {
+  tray = new Tray(path.join(__dirname, "../public/img.png"))
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Item1', type: 'radio' },
+    { label: 'Item2', type: 'radio' },
+    { label: 'Item3', type: 'radio', checked: true },
+    { label: 'Item4', type: 'radio' }
+  ])
+  tray.setToolTip('This is my application.')
+  tray.setContextMenu(contextMenu)
+})
+    const {session} = require('electron')
+
+// Modify the user agent for all requests to the following urls.
+    const filter = {
+        urls: ['https://*.weixin.qq.com/*', 'https://*.brinishness.top/*', '*://electron.github.io/*']
+    }
+
+    session.defaultSession.webRequest.onBeforeSendHeaders(
+        filter,
+        (details, callback) => {
+            details.requestHeaders['User-Agent'] = 'MyAgent'
+            console.log(details);
+            const urlObj = new URL(details.url);
+            const {searchParams} = urlObj;
+            console.log(searchParams)
+            if (searchParams.get('code')) {
+                let env = process.env.NODE_ENV;
+                console.log(process.env);
+
+                if (env == "development") {
+                    // 热更新监听窗口
+                    mainWindow.loadURL("http://127.0.0.1:5173/#/update" + urlObj.search);
+                    // 打开开发工具
+                } else {
+                    // 生产环境中要加载文件，打包的版本
+                    // Menu.setApplicationMenu(null)
+                    // 加载 index.html
+                    // mainWindow.loadFile(path.resolve(__dirname, "../dist/index.html")); // 新增
+                    mainWindow
+                        .loadURL(
+                            format({
+                                pathname: path.join(__dirname, "../dist/index.html"),
+                                protocol: "file:",
+                                slashes: true,
+                                hash: "update" + urlObj.search,
+                            })
+                        )
+                        .then((r) => {
+                            console.log(r);
+                        });
+                }
+                // mainWindow.webContents.send("login", searchParams);
+            }
+            // window.location.href = '/update'
+            callback({requestHeaders: details.requestHeaders})
+        })
     app.on("activate", function () {
         // 通常在 macOS 上，当点击 dock 中的应用程序图标时，如果没有其他
         // 打开的窗口，那么程序会重新创建一个窗口。
@@ -74,7 +144,7 @@ app.whenReady().then(() => {
 
 // 除了 macOS 外，当所有窗口都被关闭的时候退出程序。 因此，通常对程序和它们在
 // 任务栏上的图标来说，应当保持活跃状态，直到用户使用 Cmd + Q 退出。
-app.on("window-all-closed", function (e) {
+app.on("before-quit", function (e) {
     e.preventDefault();
     dialog
         .showMessageBox({
@@ -99,7 +169,15 @@ app.on("window-all-closed", function (e) {
 
 app.on("open-url", function (event, urlStr) {
     console.log(event);
-    handleUrl(urlStr);
+    const urlObj = new URL(urlStr);
+    const {searchParams} = urlObj;
+    // BrowserWindow.getAllWindows()[0].loadURL("http://127.0.0.1:5173/#/about" + urlObj.search);
+
+    BrowserWindow.getAllWindows()[0].loadURL(format({
+        pathname: path.join(__dirname, "../dist/index.html"),
+        protocol: "file:",
+        hash: "update" + urlObj.search,
+    }));
 })
 
 function handleUrl(urlStr) {
