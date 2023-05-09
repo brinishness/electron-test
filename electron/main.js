@@ -25,7 +25,7 @@ const {format} = require("url");
 const autoUpdate = require("./autoUpdate")
 let mainWindow;
 
-function createWindow(hash = "home") {
+function createWindow() {
     // 创建浏览器窗口
     mainWindow = new BrowserWindow({
         width: 1200,
@@ -60,8 +60,7 @@ function createWindow(hash = "home") {
                 format({
                     pathname: path.join(__dirname, "../dist/index.html"),
                     protocol: "file:",
-                    slashes: true,
-                    hash: hash,
+                    slashes: true
                 })
             )
             .then((r) => {
