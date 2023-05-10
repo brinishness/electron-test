@@ -62,7 +62,7 @@ function createWindow() {
                     pathname: path.join(__dirname, "../dist/index.html"),
                     protocol: "file:",
                     slashes: false,
-                    hash: ""
+                    hash: "/"
                 })
             )
             .then((r) => {
