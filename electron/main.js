@@ -61,7 +61,7 @@ function createWindow() {
                     pathname: path.join(__dirname, "../dist/index.html"),
                     protocol: "file:",
                     slashes: true,
-                    hash: "/#/"
+                    hash: ""
                 })
             )
             .then((r) => {
@@ -176,7 +176,7 @@ app.on("open-url", function (event, urlStr) {
     BrowserWindow.getAllWindows()[0].loadURL(format({
         pathname: path.join(__dirname, "../dist/index.html"),
         protocol: "file:",
-        hash: "update" + urlObj.search,
+        hash: "/update" + urlObj.search,
     }));
 })
 
