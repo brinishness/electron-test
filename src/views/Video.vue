@@ -5,9 +5,12 @@
 </template>
 <script lang="ts" setup>
 import {useRoute} from "vue-router";
-// import NERtcEngine from "nertc-electron-sdk"
+// import NERtcEngine from "nertc-electron-sdk";
 const NERtcEngine = require("nertc-electron-sdk").default;
+import WebRoomkit from 'neroom-web-sdk';
+
 console.log(NERtcEngine);
+console.log(WebRoomkit);
 const route = useRoute();
 console.log(route.query);
 

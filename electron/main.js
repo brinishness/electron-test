@@ -61,7 +61,7 @@ function createWindow() {
                     pathname: path.join(__dirname, "../dist/index.html"),
                     protocol: "file:",
                     slashes: true,
-                    hash: "#/"
+                    hash: "/#/"
                 })
             )
             .then((r) => {
@@ -123,7 +123,7 @@ app.whenReady().then(() => {
                                 pathname: path.join(__dirname, "../dist/index.html"),
                                 protocol: "file:",
                                 slashes: true,
-                                hash: "update" + urlObj.search,
+                                hash: "/update" + urlObj.search,
                             })
                         )
                         .then((r) => {
