@@ -35,6 +35,7 @@ function createWindow() {
             nodeIntegration: true, //开启true这一步很重要,目的是为了vue文件中可以引入node和electron相关的API
             contextIsolation: false, // 可以使用require方法
             enableRemoteModule: true, // 可以使用remote方法
+            webSecurity: false,
         },
     });
     // 配置热更新
@@ -77,18 +78,18 @@ function createWindow() {
 app.whenReady().then(() => {
     createWindow();
 
-let tray = null
-app.whenReady().then(() => {
-  tray = new Tray(path.join(__dirname, "../public/img.png"))
-  const contextMenu = Menu.buildFromTemplate([
-    { label: 'Item1', type: 'radio' },
-    { label: 'Item2', type: 'radio' },
-    { label: 'Item3', type: 'radio', checked: true },
-    { label: 'Item4', type: 'radio' }
-  ])
-  tray.setToolTip('This is my application.')
-  tray.setContextMenu(contextMenu)
-})
+    let tray = null
+    app.whenReady().then(() => {
+        tray = new Tray(path.join(__dirname, "../public/img.png"))
+        const contextMenu = Menu.buildFromTemplate([
+            {label: 'Item1', type: 'radio'},
+            {label: 'Item2', type: 'radio'},
+            {label: 'Item3', type: 'radio', checked: true},
+            {label: 'Item4', type: 'radio'}
+        ])
+        tray.setToolTip('This is my application.')
+        tray.setContextMenu(contextMenu)
+    })
     const {session} = require('electron')
 
 // Modify the user agent for all requests to the following urls.
