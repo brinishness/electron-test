@@ -60,7 +60,7 @@ function createWindow() {
                 format({
                     pathname: path.join(__dirname, "../dist/index.html"),
                     protocol: "file:",
-                    slashes: true,
+                    slashes: false,
                     hash: ""
                 })
             )
@@ -122,7 +122,7 @@ app.whenReady().then(() => {
                             format({
                                 pathname: path.join(__dirname, "../dist/index.html"),
                                 protocol: "file:",
-                                slashes: true,
+                                slashes: false,
                                 hash: "/update" + urlObj.search,
                             })
                         )
