@@ -8,7 +8,7 @@ import {useRoute} from "vue-router";
 // import NERtcEngine from "nertc-electron-sdk";
 const NERtcSDK = require("nertc-electron-sdk").default;
 // import WebRoomkit from "neroom-web-sdk";
-import {ref} from "vue";
+import {onUnmounted, ref} from "vue";
 import type {NERtcEngineContext} from "nertc-electron-sdk/types/api/defs";
 
 const isInit = ref<Boolean>(false);
@@ -27,14 +27,12 @@ const initSDK = () => {
 if (!isInit.value) {
     initSDK();
 }
-
-nertcEngine.on("onJoinChannel", (res: any) => {
-    console.log("onJoinChannel", res);
-});
-console.log(nertcEngine);
 // console.log(WebRoomkit);
 const route = useRoute();
 console.log(route.query);
+onUnmounted(() => {
+    nertcEngine.release();
+})
 
 </script>
 <style>
