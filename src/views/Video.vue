@@ -7,13 +7,16 @@
 import {useRoute} from "vue-router";
 // import NERtcEngine from "nertc-electron-sdk";
 const NERtcEngine = require("nertc-electron-sdk").default;
-NERtcEngine.initialize({
+let ret = NERtcEngine.initialize({
     app_key: "0799fc1781779cc0e754a549d615f95b",
     log_dir: "./log",
     log_level: 4,
     log_file_max_size_KB: 1024,
     log_file_max_keep_days: 3,
 });
+
+console.log(`initialize::ret = ${ret}`)
+
 NERtcEngine.on("onJoinChannel", (res: any) => {
     console.log("onJoinChannel", res);
 });
