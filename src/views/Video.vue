@@ -5,9 +5,12 @@
 </template>
 <script lang="ts" setup>
 import {useRoute} from "vue-router";
-// import NERtcEngine from "nertc-electron-sdk";
-const NERtcEngine = require("nertc-electron-sdk").default;
-let ret = NERtcEngine.initialize({
+import NERtcEngine from "nertc-electron-sdk";
+const NERtcSDK = require("nertc-electron-sdk").default;
+import WebRoomkit from "neroom-web-sdk";
+
+var nertcEngine = new NERtcSDK.NERtcEngine();
+let ret = nertcEngine.initialize({
     app_key: "0799fc1781779cc0e754a549d615f95b",
     log_dir: "./log",
     log_level: 4,
@@ -15,14 +18,12 @@ let ret = NERtcEngine.initialize({
     log_file_max_keep_days: 3,
 });
 
-console.log(`initialize::ret = ${ret}`)
+console.log(`initialize::ret = ${ret}`);
 
-NERtcEngine.on("onJoinChannel", (res: any) => {
+nertcEngine.on("onJoinChannel", (res: any) => {
     console.log("onJoinChannel", res);
 });
-import WebRoomkit from 'neroom-web-sdk';
-
-console.log(NERtcEngine);
+console.log(nertcEngine);
 console.log(WebRoomkit);
 const route = useRoute();
 console.log(route.query);
