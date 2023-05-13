@@ -2,13 +2,24 @@
     <div class="about">
         <h1>This is an login page</h1>
         <div id="wx_reg"></div>
+        <wxlogin
+                :appid="appid"
+                :scope="'snsapi_userinfo'"
+                :theme="'black'"
+                :redirect_uri="redirect_uri"
+                rel="external nofollow"
+        >
+        </wxlogin>
     </div>
 </template>
 <script lang="ts" setup>
+import wxlogin from 'vue-wxlogin'
+
 // import WwLogin from "../libs/wwLogin-1.2.8";
 // const WwLogin = require("../libs/wwLogin-1.2.8");
 import {useRouter} from "vue-router";
-
+const appid = 'wxdbe71c811d91261f';
+const redirect_uri = encodeURI("https://manage.brinishness.top");
 const router = useRouter();
 let ipcRenderer = require("electron").ipcRenderer;
 import {onMounted} from "vue";

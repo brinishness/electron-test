@@ -1,7 +1,9 @@
 // 控制应用生命周期和创建原生浏览器窗口的模组
-const {app, ipcMain, BrowserWindow, Menu, dialog, Notification, session, Tray} = require("electron");
+const {app, ipcMain, BrowserWindow, Menu, dialog, Notification, session, Tray, nativeTheme} = require("electron");
 const path = require("path");
 const {format} = require("url");
+
+const {machineId, machineIdSync} = require('node-machine-id');
 // require('update-electron-app')();
 // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = true // 关闭控制台的警告
 // const packager = require('electron-packager')
@@ -76,7 +78,43 @@ function createWindow() {
 // 部分 API 在 ready 事件触发后才能使用。
 app.whenReady().then(() => {
     createWindow();
+    const mqtt = require('mqtt')
 
+    const host = 'emqx.brinishness.eu.org'
+    const port = '8523'
+    const clientId = `mqtt_${Math.random().toString(16).slice(3)}`
+
+    const connectUrl = `tcp://${host}:${port}`
+    const client = mqtt.connect(connectUrl, {
+        clientId,
+        clean: true,
+        connectTimeout: 4000,
+        username: 'tears',
+        password: 'qjm13164816910',
+        reconnectPeriod: 1000,
+    })
+
+    const topic = 'test'
+    client.on('connect', () => {
+        console.log('Connected')
+        client.subscribe([topic], () => {
+            console.log(`Subscribe to topic '${topic}'`)
+        })
+        client.publish(topic, 'nodejs mqtt test', {qos: 0, retain: false}, (error) => {
+            if (error) {
+                console.error(error)
+            }
+        })
+    })
+    client.on('message', (topic, payload) => {
+        console.log('Received Message:', topic, payload.toString())
+        mainWindow.webContents.send('mqtt', payload.toString());
+    })
+    ipcMain.on("getSystemInfo", (event, data) => {
+        machineId(true).then((id) => {
+            mainWindow.webContents.send('getSystemInfo', id);
+        })
+    })
     let tray = null
     app.whenReady().then(() => {
         tray = new Tray(path.join(__dirname, "../public/img.png"))
@@ -178,6 +216,10 @@ app.on("open-url", function (event, urlStr) {
         protocol: "file:",
         hash: "/update" + urlObj.search,
     }));
+})
+ipcMain.on("changeTheme", (event, data) => {
+    nativeTheme.themeSource = data;
+    console.log(data);
 })
 
 function handleUrl(urlStr) {
