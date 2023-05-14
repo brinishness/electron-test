@@ -2,9 +2,6 @@
   "productName": "tears",
   //  "artifactName": "${productName}-${arch}-${os}.${ext}",
   "appId": "com.anzhuoapp.anxin",
-  "asarUnpack": [
-    "node_modules/nertc-electron-sdk/build/Release"
-  ],
   "files": [
     "electron/main.js",
     "electron/autoUpdate.js",

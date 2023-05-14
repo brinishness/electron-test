@@ -51,6 +51,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
+      - name: show
+        run: ls -al
+
       - name: Upload File
         uses: actions/upload-artifact@v2
         with:
