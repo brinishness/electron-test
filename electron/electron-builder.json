@@ -8,8 +8,7 @@
   "files": [
     "electron/main.js",
     "electron/autoUpdate.js",
-    "dist",
-    "!node_modules/trtc-electron-sdk/build/mac-framework"
+    "dist"
   ],
   "extraFiles": [
     "./videos",
@@ -19,15 +18,6 @@
     "output": "./builder"
   },
   "win": {
-    "extraFiles": [
-      {
-        "from": "node_modules/nertc-electron-sdk/build/Release/",
-        "to": "./resources",
-        "filter": [
-          "**/*"
-        ]
-      }
-    ],
     "target": [
       {
         "target": "nsis",
@@ -39,12 +29,6 @@
     ]
   },
   "mac": {
-    "extraFiles": [
-      {
-        "from": "node_modules/nertc-electron-sdk/build/Release/",
-        "to": "./Resources"
-      }
-    ],
     "forceCodeSigning": false,
     "target": [
       {
