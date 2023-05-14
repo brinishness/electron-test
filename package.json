@@ -1,6 +1,6 @@
 {
   "name": "tears",
-  "version": "1.6.9",
+  "version": "1.6.10",
   "private": true,
   "main": "electron/main.js",
   "author": {
