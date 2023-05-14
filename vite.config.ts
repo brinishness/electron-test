@@ -29,5 +29,15 @@ export default defineConfig({
     server: {
         host: "0.0.0.0",
         port: 5173
+    },
+    build: {
+        chunkSizeWarningLimit: 5000,
+        rollupOptions: {
+            output: {
+                chunkFileNames: 'static/[name].js',
+                entryFileNames: 'static/js/[name].js',
+                assetFileNames: 'static/[ext]/[name]-[hash].[ext]',
+            },
+        },
     }
 })
