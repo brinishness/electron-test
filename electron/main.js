@@ -47,6 +47,7 @@ function createWindow() {
       nodeIntegration: true, //开启true这一步很重要,目的是为了vue文件中可以引入node和electron相关的API
       contextIsolation: false, // 可以使用require方法
       enableRemoteModule: true, // 可以使用remote方法
+      webSecurity: false,
     },
   });
   // 配置热更新
