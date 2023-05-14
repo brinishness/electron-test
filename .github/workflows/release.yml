@@ -87,4 +87,3 @@ jobs:
             *.zip
             *.deb
             *.rpm
-            *.snap

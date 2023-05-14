@@ -1,14 +1,18 @@
 <template>
     <div class="about">
+        <el-input placeholder="房间号" v-model="roomnumber"></el-input>
+        <el-button type="primary" round @click="createUser">创建用户</el-button>
+        <el-button type="primary" round @click="userLogin">用户登录</el-button>
         <el-button type="primary" round @click="createRoom">创建房间</el-button>
         <el-button type="primary" round @click="joinRoom">进入房间</el-button>
         <el-button type="primary" round @click="leaveRoom">离开房间</el-button>
         <el-button type="primary" round @click="removeRoom">删除房间</el-button>
+        <el-button type="primary" round @click="members">房间状态</el-button>
         <div id="canvas"></div>
     </div>
 </template>
 <script lang="ts" setup>
-import {ElButton} from "element-plus";
+import {ElButton, ElInput} from "element-plus";
 import {useRoute} from "vue-router";
 // import NERtcEngine from "nertc-electron-sdk";
 // const NERtcSDK = require("nertc-electron-sdk").default;
@@ -31,7 +35,7 @@ rtc.client = NERTC.createClient({
     debug: true, //是否开启调试日志
 });
 console.log(rtc.client);
-
+const roomnumber = ref<string>("");
 // 初始化
 const roomkitInstance = new WebRoomkit()
 roomkitInstance.initialize({
@@ -45,13 +49,14 @@ roomkitInstance.initialize({
 // })
 // 获取authService和roomService
 const NEAuthService = roomkitInstance.authService;
-NEAuthService.login("13164816910", "O6UDU4HF1E17NZUDOIMJJ8K3").then(res => {
-    console.log(res, 'login success')
-}).catch(err => {
-    console.error(err, 'login fail')
-})
+const userLogin = () => {
+    NEAuthService.login("13164816910", "O6UDU4HF1E17NZUDOIMJJ8K3").then(res => {
+        console.log(res, 'login success')
+    }).catch(err => {
+        console.error(err, 'login fail')
+    })
+}
 const NERoomService = roomkitInstance.roomService;
-console.log(roomkitInstance);
 // 销毁sdk
 // createUser({
 //     accid: "13164816911",
@@ -59,11 +64,13 @@ console.log(roomkitInstance);
 // }).then(res=>{
 //     console.log(res);
 // })
-// createRoomUser(131618416910, {
-//     appKey: 'a88f59cb25cdc1dbf437529f03d6f062',
-//     userUuid: '13164816910',
-//     userName: 'tears',
-// })
+const createUser = () => {
+    createRoomUser(131618416910, {
+        appKey: 'a88f59cb25cdc1dbf437529f03d6f062',
+        userUuid: '13164816910',
+        userName: 'tears',
+    })
+}
 onUnmounted(() => {
     roomkitInstance.release()
 })
@@ -80,9 +87,9 @@ const createRoom = () => {
      */
 
     const params = <NECreateRoomParams>{
-        templateId: '40',
+        templateId: 40,
         roomName: '123455',
-        roomUuid: '123456'
+        roomUuid: roomnumber.value
     }
     const options = <NECreateRoomOptions>{
         enableRtc: true,
@@ -100,7 +107,7 @@ const removeRoom = () => {
     /**
      * @param roomUuid 房间ID
      */
-    const NERoomContext = NERoomService.getRoomContext('123456')
+    const NERoomContext = NERoomService.getRoomContext(roomnumber.value)
     console.log(NERoomContext);
     NERoomContext.endRoom().then(() => {
         console.log('endRoom success')
@@ -109,18 +116,19 @@ const removeRoom = () => {
     })
 
 }
-const joinRoom = ()=>{
-        /**
+const joinRoom = () => {
+    /**
      * 加入房间
      * @param params.role 用户加入房间的角色
      * @param params.userName 用户名
      * @param params.roomUuid 房间ID
      */
+
     NERoomService.joinRoom(<NEJoinRoomParams>{
         role: 'host', // 示例数据
-        roomUuid: '123456',
+        roomUuid: roomnumber.value,
         userName: 'tears'
-    },{}).then(res => {
+    }, {}).then(res => {
         console.log('joinRoom success')
     }).catch(err => {
         console.error(err, 'joinRoom error')
@@ -128,17 +136,28 @@ const joinRoom = ()=>{
 
 }
 
-const leaveRoom = ()=>{
+const leaveRoom = () => {
     /**
- * @param roomUuid 房间ID
- */
-const NERoomContext = NERoomService.getRoomContext('123456')
+     * @param roomUuid 房间ID
+     */
+    const NERoomContext = NERoomService.getRoomContext(roomnumber.value)
 
-NERoomContext.leaveRoom().then(() => {
-   console.log('leaveRoom success')
-}).catch(err => {
-   console.error(err, 'leaveRoom fail')
-})
+    NERoomContext.leaveRoom().then(() => {
+        console.log('leaveRoom success')
+    }).catch(err => {
+        console.error(err, 'leaveRoom fail')
+    })
+
+}
+const members = () => {
+    const loginStatus = NEAuthService.isLoggedIn
+    console.log(loginStatus);
+
+    const NERoomContext = NERoomService.getRoomContext(roomnumber.value);
+    const localMember = NERoomContext.localMember;
+    console.log(localMember);
+    const remoteMembers = NERoomContext.remoteMembers;
+    console.log(remoteMembers);
 
 }
 // const isInit = ref<Boolean>(false);
