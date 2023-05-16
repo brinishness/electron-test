@@ -46,9 +46,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
+      - name: install dependencies (macos only)
+        if: matrix.platform == 'macos-latest'
+        run: |
+          CERTIFICATE_PATH=$RUNNER_TEMP/tears.p12
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
+
       - name: Install app dependencies and build it
         run: npm install && npm run electron:build
         env:
+          CSC_LINK: $CERTIFICATE_PATH
+          CSC_KEY_PASSWORD: ${{ secrets.P12_PASSWORD }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Upload File
