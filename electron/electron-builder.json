@@ -25,7 +25,16 @@
       }
     ]
   },
+  "nsis": {
+    "oneClick": false,
+    "allowElevation": true,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true
+  },
   "mac": {
+    "hardenedRuntime": true,
+    "gatekeeperAssess": false,
     "forceCodeSigning": false,
     "target": [
       {
