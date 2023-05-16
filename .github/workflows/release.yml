@@ -55,7 +55,7 @@ jobs:
       - name: Install app dependencies and build it
         run: npm install && npm run electron:build
         env:
-          CSC_LINK: $CERTIFICATE_PATH
+          CSC_LINK: $RUNNER_TEMP/tears.p12
           CSC_KEY_PASSWORD: ${{ secrets.P12_PASSWORD }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 

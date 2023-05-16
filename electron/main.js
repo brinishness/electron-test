@@ -14,7 +14,11 @@ const {
 } = require("electron");
 const path = require("path");
 const {format} = require("url");
+const Store = require('electron-store');
 
+const store = new Store();
+
+//=> undefined
 const {machineId, machineIdSync} = require("node-machine-id");
 // require('update-electron-app')();
 // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = true // 关闭控制台的警告
@@ -83,6 +87,7 @@ function createWindow() {
                 console.log(r);
             });
     }
+    nativeTheme.themeSource = store.get("theme") || "system";
     autoUpdate.handleUpdate(mainWindow);
 }
 
@@ -256,7 +261,8 @@ app.on("open-url", function (event, urlStr) {
     );
 });
 ipcMain.on("changeTheme", (event, data) => {
-    nativeTheme.themeSource = data;
+    store.set("theme", data);
+    nativeTheme.themeSource = store.get("theme");
     console.log(data);
 });
 
