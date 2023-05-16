@@ -7,6 +7,8 @@ const ipcRenderer = require("electron").ipcRenderer;
 ipcRenderer.on("mqtt", (event, data)=>{
     console.log(data);
 })
+const { machineId, machineIdSync } = require("node-machine-id");
+console.log(machineIdSync(true));
 </script>
 
 <template>

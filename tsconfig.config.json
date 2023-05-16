@@ -1,8 +1,16 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["vite.config.*", "vitest.config.*", "cypress.config.*", "playwright.config.*"],
+  "include": [
+    "vite.config.*",
+    "vitest.config.*",
+    "cypress.config.*",
+    "playwright.config.*",
+    "postcss-px-to-viewport.d.ts"
+  ],
   "compilerOptions": {
     "composite": true,
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   }
 }

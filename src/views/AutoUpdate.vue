@@ -64,8 +64,8 @@ ipcRenderer.on("message", (e, data) => {
                     ipcRenderer.send("downloadUpdate");
                 })
                 .catch(() => {
-                    logger.info("取消下载新版本");
-                    this.$message({
+                    // logger.info("取消下载新版本");
+                    ElMessage({
                         message: "取消下载",
                         type: "warning",
                     });
@@ -111,7 +111,7 @@ ipcRenderer.on("downloadProgress", (e, progressObj) => {
 
 // 是否立即下载
 ipcRenderer.on("isUpdateNow", (e, data) => {
-    console.log("data---->", data);
+    console.log("isUpdateNow---->", data);
 
     ElMessageBox.confirm("下载已完成，是否立即安装", "提示", {
         closeOnClickModal: false, // 禁止点击遮罩关闭弹框
@@ -143,6 +143,10 @@ ipcRenderer.on('downloadProgress', (event, progressObj) => {
     if (Math.trunc(percent.value) === 100) {
         console.log('开始更新')
     }
+})
+
+ipcRenderer.on("updateMessage", (event, data) => {
+    console.log('updateMessage', data);
 })
 const downloadUpdate = () => {
     console.log('2222');

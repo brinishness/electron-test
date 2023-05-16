@@ -8,17 +8,25 @@
         <el-button type="primary" round @click="leaveRoom">离开房间</el-button>
         <el-button type="primary" round @click="removeRoom">删除房间</el-button>
         <el-button type="primary" round @click="members">房间状态</el-button>
+        <el-button type="primary" round @click="share">分享</el-button>
         <div id="canvas"></div>
+        <div v-for="(item, index) in sources" :key="index" @click="changeSource(item.id)">
+            {{ item.name }}
+        </div>
+        <video autoplay playsinline></video>
+<!--        <video ref="refs" style="width: 300px;" @mouseenter="mouseEnter(index)" autoplay playsinline v-for="(item, index) in srcs" :srcObject="item.src" :key="index"></video>-->
     </div>
 </template>
 <script lang="ts" setup>
 import {ElButton, ElInput} from "element-plus";
 import {useRoute} from "vue-router";
+
+const ipcRenderer = require("electron").ipcRenderer;
 // import NERtcEngine from "nertc-electron-sdk";
 // const NERtcSDK = require("nertc-electron-sdk").default;
 import NERTC from "nertc-web-sdk"
 // import WebRoomkit from "neroom-web-sdk";
-import {onUnmounted, ref} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
 import {createRoomUser, createUser, getToken} from "@/api";
 import type {NERtcEngineContext} from "nertc-electron-sdk/types/api/defs";
 import WebRoomkit from "neroom-web-sdk";
@@ -29,8 +37,11 @@ import type {
 } from "neroom-web-sdk/dist/types/types/roomService";
 //创建client实例
 let rtc = {};
-
+const refs = ref([]);
+const {desktopCapturer} = require('electron')
+const sources = ref([]);
 rtc.client = NERTC.createClient({
+    // appkey: 'a88f59cb25cdc1dbf437529f03d6f062', //您的 App Key
     appkey: 'a88f59cb25cdc1dbf437529f03d6f062', //您的 App Key
     debug: true, //是否开启调试日志
 });
@@ -103,6 +114,7 @@ const createRoom = () => {
         console.error(err, 'createRoom fail')
     })
 }
+const srcs = ref([]);
 const removeRoom = () => {
     /**
      * @param roomUuid 房间ID
@@ -175,6 +187,23 @@ const members = () => {
 
 // if (!isInit.value) {
 //     initSDK();
+// }    // try {
+//     const stream = await navigator.mediaDevices.getUserMedia({
+//         audio: false,
+//         video: {
+//             mandatory: {
+//                 chromeMediaSource: 'desktop',
+//                 chromeMediaSourceId: sourceId,
+//                 minWidth: 1280,
+//                 maxWidth: 1280,
+//                 minHeight: 720,
+//                 maxHeight: 720
+//             }
+//         }
+//     })
+//     handleStream(stream)
+// } catch (e) {
+//     handleError(e)
 // }
 // console.log(WebRoomkit);
 const route = useRoute();
@@ -182,7 +211,143 @@ console.log(route.query);
 // onUnmounted(() => {
 //     nertcEngine.release();
 // })
+const share = () => {
+    console.log(111);
+    ipcRenderer.send('getSource');
+}
+ipcRenderer.on('SET_SOURCE', async (event, so) => {
+    console.log(so);
+    sources.value = so;
+    so.map(async (item, index) => {
+        console.log('item-----', item);
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                audio: false,
+                video: {
+                    mandatory: {
+                        chromeMediaSource: 'desktop',
+                        chromeMediaSourceId: item.id,
+                        minWidth: 1280,
+                        maxWidth: 1280,
+                        minHeight: 720,
+                        maxHeight: 720
+                    }
+                }
+            })
+            const obj = {src: stream}
+            srcs.value.push(obj);
 
+        } catch (e) {
+            handleError(e)
+        }
+    })
+    // try {
+    //     const stream = await navigator.mediaDevices.getUserMedia({
+    //         audio: false,
+    //         video: {
+    //             mandatory: {
+    //                 chromeMediaSource: 'desktop',
+    //                 chromeMediaSourceId: sourceId,
+    //                 minWidth: 1280,
+    //                 maxWidth: 1280,
+    //                 minHeight: 720,
+    //                 maxHeight: 720
+    //             }
+    //         }
+    //     })
+    //     handleStream(stream)
+    // } catch (e) {
+    //     handleError(e)
+    // }
+})
+const mouseEnter = (index) => {
+    console.log(111);
+    // document.querySelectorAll("video")[index].style.width = '500px';
+    refs.value[index].style.width = '500px';
+}
+const changeSource = async (sourceId) => {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            audio: false,
+            video: {
+                mandatory: {
+                    chromeMediaSource: 'desktop',
+                    chromeMediaSourceId: sourceId,
+                    minWidth: 1280,
+                    maxWidth: 1280,
+                    minHeight: 720,
+                    maxHeight: 720
+                }
+            }
+        })
+        handleStream(stream)
+    } catch (e) {
+        handleError(e)
+    }
+}
+
+function handleStream(stream) {
+    const video = document.querySelector('video')
+    video.srcObject = stream
+    video.onloadedmetadata = (e) => video.play()
+}
+
+function handleError(e) {
+    console.log(e)
+}
+
+onMounted(async () => {
+    navigator.mediaDevices.enumerateDevices().then(res => {
+        console.log(res);
+        const data = res.filter((item)=>{
+            return item.kind === 'videoinput';
+        })
+        console.log(data);
+    })
+    const constraints = {
+        video: true,
+        audio: true,
+    };
+// 非安全模式（非https/localhost）下 navigator.mediaDevices 会返回 undefined
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia(constraints)
+        console.log(stream);
+        document.querySelector('video').srcObject = stream;
+    } catch (error) {
+        console.error(error);
+    }
+    // In the renderer process.
+
+    // await desktopCapturer.getSources({types: ['window', 'screen']}, (error, sources) => {
+    //     if (error) throw error
+    //     for (let i = 0; i < sources.length; ++i) {
+    //         if (sources[i].name === 'Electron') {
+    //             navigator.mediaDevices.getUserMedia({
+    //                 audio: false,
+    //                 video: {
+    //                     mandatory: {
+    //                         chromeMediaSource: 'desktop',
+    //                         chromeMediaSourceId: sources[i].id,
+    //                         minWidth: 1280,
+    //                         maxWidth: 1280,
+    //                         minHeight: 720,
+    //                         maxHeight: 720
+    //                     }
+    //                 }
+    //             }, handleStream, handleError)
+    //             return
+    //         }
+    //     }
+    // })
+
+    // function handleStream(stream) {
+    //     document.querySelector('video').src = URL.createObjectURL(stream)
+    // }
+
+    // function handleError(e) {
+    //     console.log(e)
+    // }
+})
 </script>
 <style>
 @media (min-width: 1024px) {

@@ -44,10 +44,26 @@
       }
     ]
   },
+  "dmg": {
+    "contents": [
+      {
+        "x": 410,
+        "y": 150,
+        "type": "link",
+        "path": "/Applications"
+      },
+      {
+        "x": 130,
+        "y": 150,
+        "type": "file"
+      }
+    ]
+  },
   "linux": {
     "category": "com.anzhuoapp.anxin",
     "executableArgs": [
-      "--no-sandbox", "--deb-no-default-config-files"
+      "--no-sandbox",
+      "--deb-no-default-config-files"
     ],
     "target": [
       {
@@ -99,7 +115,7 @@
     // url:"http://xxx.xxx.xxx.xxx/xxx/xxx",
     // 升级包在服务器地址，不用指向具体的升级包文件
     // 在本地起的http服务器
-    "url": "http://192.168.50.64:1234",
+    "url": "http://127.0.0.1:1234",
     "channel": "latest"
   }
 }
