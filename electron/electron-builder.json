@@ -6,6 +6,7 @@
   "files": [
     "electron/main.js",
     "electron/autoUpdate.js",
+    "electron/**/*",
     "dist"
   ],
   "extraFiles": [
