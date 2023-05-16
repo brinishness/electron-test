@@ -153,7 +153,7 @@ app.whenReady().then(() => {
     });
     let tray = null;
     app.whenReady().then(() => {
-        tray = new Tray(path.join(__dirname, "../public/img.png"));
+        tray = new Tray(path.join(__dirname, "tray.png"));
         const contextMenu = Menu.buildFromTemplate([
             {label: "Item1", type: "radio"},
             {label: "Item2", type: "radio"},

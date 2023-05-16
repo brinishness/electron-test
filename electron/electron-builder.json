@@ -2,6 +2,7 @@
   "productName": "tears",
   //  "artifactName": "${productName}-${arch}-${os}.${ext}",
   "appId": "com.anzhuoapp.anxin",
+  "asar": true,
   "files": [
     "electron/main.js",
     "electron/autoUpdate.js",
@@ -12,7 +13,8 @@
     "./video"
   ],
   "directories": {
-    "output": "./builder"
+    "output": "./builder",
+    "buildResources": "./"
   },
   "win": {
     "target": [
@@ -29,6 +31,8 @@
     "oneClick": false,
     "allowElevation": true,
     "allowToChangeInstallationDirectory": true,
+    "installerIcon": "public/windows.ico",
+    "installerHeaderIcon": "public/windows.ico",
     "createDesktopShortcut": true,
     "createStartMenuShortcut": true
   },
@@ -36,6 +40,7 @@
     "hardenedRuntime": true,
     "gatekeeperAssess": false,
     "forceCodeSigning": false,
+    "icon": "public/macos.icns",
     "target": [
       {
         "target": "dmg",
@@ -70,6 +75,7 @@
   },
   "linux": {
     "category": "com.anzhuoapp.anxin",
+    "icon": "public/macos.png",
     "executableArgs": [
       "--no-sandbox",
       "--deb-no-default-config-files"
