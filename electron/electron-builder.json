@@ -1,7 +1,7 @@
 {
   "productName": "tears",
   //  "artifactName": "${productName}-${arch}-${os}.${ext}",
-  "appId": "com.anzhuoapp.anxin",
+  "appId": "tears",
   "asar": true,
   "files": [
     "electron/main.js",
@@ -32,7 +32,7 @@
   "nsis": {
     "oneClick": false,
     "perMachine": true,
-    "include": "electron/install.nsh",
+//    "include": "electron/install.nsh",
     "allowElevation": true,
     "allowToChangeInstallationDirectory": true,
     "installerIcon": "public/windows.ico",
