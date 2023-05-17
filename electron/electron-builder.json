@@ -32,7 +32,7 @@
   "nsis": {
     "oneClick": false,
     "perMachine": true,
-    "include": "install.nsh",
+    "include": "electron/install.nsh",
     "allowElevation": true,
     "allowToChangeInstallationDirectory": true,
     "installerIcon": "public/windows.ico",
