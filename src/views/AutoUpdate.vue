@@ -59,6 +59,7 @@ ipcRenderer.on("message", (e, data) => {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning",
+                message: "本次更新内容：\n" + data.msg,
             })
                 .then(() => {
                     ipcRenderer.send("downloadUpdate");

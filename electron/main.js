@@ -54,6 +54,7 @@ function createWindow() {
             contextIsolation: false, // 可以使用require方法
             enableRemoteModule: true, // 可以使用remote方法
             webSecurity: false,
+            webviewTag: true,
         },
     });
     // 配置热更新
