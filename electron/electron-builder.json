@@ -31,6 +31,8 @@
   },
   "nsis": {
     "oneClick": false,
+    "perMachine": true,
+    "include": "installer.nsh",
     "allowElevation": true,
     "allowToChangeInstallationDirectory": true,
     "installerIcon": "public/windows.ico",

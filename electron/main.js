@@ -39,7 +39,7 @@ const {machineId, machineIdSync} = require("node-machine-id");
 // }
 // args.push('--');
 //
-// app.setAsDefaultProtocolClient(PROTOCOL, process.execPath, args);
+app.setAsDefaultProtocolClient("tears", process.execPath);
 const autoUpdate = require("./autoUpdate");
 let mainWindow;
 
