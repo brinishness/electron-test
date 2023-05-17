@@ -18,6 +18,7 @@
     "buildResources": "./"
   },
   "win": {
+    "verifyUpdateCodeSignature": true,
     "target": [
       {
         "target": "nsis",
