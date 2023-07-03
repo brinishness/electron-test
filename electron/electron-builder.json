@@ -41,6 +41,8 @@
     "createStartMenuShortcut": true
   },
   "mac": {
+    "appId": "tears",
+    "category": "tears",
     "hardenedRuntime": true,
     "gatekeeperAssess": false,
     "forceCodeSigning": false,

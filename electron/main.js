@@ -7,6 +7,7 @@ const {
     dialog,
     Notification,
     session,
+    screen,
     systemPreferences,
     desktopCapturer,
     Tray,
@@ -39,6 +40,8 @@ const {machineId, machineIdSync} = require("node-machine-id");
 // }
 // args.push('--');
 //
+// app.allowRendererProcessReuse = true
+app.allowRendererProcessReuse = false;
 if (process.platform === 'win32') {
     app.setAsDefaultProtocolClient("tears", process.execPath);
 }
@@ -46,6 +49,7 @@ const autoUpdate = require("./autoUpdate");
 let mainWindow;
 
 function createWindow() {
+    console.log(screen.getAllDisplays());
     // 创建浏览器窗口
     mainWindow = new BrowserWindow({
         width: 1200,
@@ -55,7 +59,7 @@ function createWindow() {
             nodeIntegration: true, //开启true这一步很重要,目的是为了vue文件中可以引入node和electron相关的API
             contextIsolation: false, // 可以使用require方法
             enableRemoteModule: true, // 可以使用remote方法
-            webSecurity: false,
+            webSecurity: true,
             webviewTag: true,
         },
     });
@@ -69,7 +73,7 @@ function createWindow() {
             electron: require(elePath),
         });
         // 热更新监听窗口
-        mainWindow.loadURL("http://127.0.0.1:5173");
+        mainWindow.loadURL("http://127.0.0.1:5175");
         // 打开开发工具
         mainWindow.webContents.openDevTools();
     } else {
@@ -268,6 +272,10 @@ ipcMain.on("changeTheme", (event, data) => {
     nativeTheme.themeSource = store.get("theme");
     console.log(data);
 });
+
+ipcMain.handle("getTheme", async (event, data) => {
+    return data;
+})
 
 ipcMain.on("getSource", (event, data) => {
     // 在主进程中.
